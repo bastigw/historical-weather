@@ -163,7 +163,6 @@ const trendText = computed(() => {
       </div>
       <p class="mt-2 px-1 text-xs text-slate-600 dark:text-slate-500">
         <span class="font-medium text-pink-700 dark:text-pink-300">{{ trendText }}</span>
-        <span class="ml-1.5">{{ t('trendCaveat') }}</span>
       </p>
     </div>
   </section>

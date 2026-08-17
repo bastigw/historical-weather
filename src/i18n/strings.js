@@ -75,7 +75,6 @@ export const strings = {
     trendDrier: '{value} mm drier per decade',
     trendPerDecade: '{value} {unit} per decade',
     trendFlat: 'No clear trend',
-    trendCaveat: '20 years is a hint, not proof.',
 
     climatologyTitle: 'Around your period',
     climatologyHint:
@@ -169,7 +168,6 @@ export const strings = {
     trendDrier: '{value} mm weniger Regen pro Jahrzehnt',
     trendPerDecade: '{value} {unit} pro Jahrzehnt',
     trendFlat: 'Kein klarer Trend',
-    trendCaveat: '20 Jahre sind ein Hinweis, kein Beweis.',
 
     climatologyTitle: 'Rund um deinen Zeitraum',
     climatologyHint:
