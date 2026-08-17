@@ -9,13 +9,20 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'favicon-light.svg'],
+      // The manifest format has no way to react to prefers-color-scheme, so
+      // these cover the assets that do (dark favicons, the dark iOS
+      // home-screen icon) plus the .ico fallback, which isn't picked up by
+      // the svg/png globs below.
+      includeAssets: ['favicon.ico', 'favicon-dark.svg', 'apple-touch-icon-dark.png'],
       manifest: {
         name: 'Historical Weather',
         short_name: 'Historical Weather',
         description: 'What the weather has historically been like at a given location.',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        // Light is the default scheme; the manifest can't branch on
+        // prefers-color-scheme, so this is what the OS install icon and
+        // standalone splash screen use regardless of system theme.
+        theme_color: '#f8fafc',
+        background_color: '#f8fafc',
         display: 'standalone',
         start_url: '/',
         icons: [

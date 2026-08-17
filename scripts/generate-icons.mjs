@@ -1,9 +1,12 @@
 /**
- * Draws the app icons: a seasonal temperature ribbon on a night-sky square,
- * the same idea as the year strip in the app.
+ * Draws the app icons: a temperature ribbon (the same idea as the year strip
+ * in the app) on a rounded square. Light is the default everywhere a scheme
+ * can't be chosen (the PWA manifest, favicon.ico); a dark variant is
+ * generated alongside for contexts that can react to prefers-color-scheme
+ * (the SVG/PNG favicons, and iOS's dark home-screen icon).
  *
  * Run with `node scripts/generate-icons.mjs`. Rasterising here avoids adding an
- * image toolchain just to produce four static files.
+ * image toolchain just to produce a handful of static files.
  */
 import { deflateSync } from 'node:zlib'
 import { writeFileSync, mkdirSync } from 'node:fs'
@@ -57,7 +60,8 @@ function encodePNG(width, height, rgba) {
 
 /* --------------------------------------------------------------- the image */
 
-const BACKGROUND = [11, 18, 32]
+const BACKGROUND_LIGHT = [248, 250, 252]
+const BACKGROUND_DARK = [11, 18, 32]
 const COOL = [56, 189, 248]
 const WARM = [251, 191, 36]
 
@@ -72,7 +76,7 @@ function roundedSquareAlpha(x, y, size, radius) {
   return Math.max(0, Math.min(1, 0.5 - distance))
 }
 
-function draw(size, { maskable }) {
+function draw(size, { maskable, background }) {
   const pixels = Buffer.alloc(size * size * 4)
   const radius = size * 0.22
   // Maskable icons must survive an aggressive circular crop, so the artwork
@@ -86,7 +90,7 @@ function draw(size, { maskable }) {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const i = (y * size + x) * 4
-      let colour = BACKGROUND
+      let colour = background
       let alpha = maskable ? 1 : roundedSquareAlpha(x, y, size, radius)
 
       const position = (x - left) / width
@@ -101,7 +105,7 @@ function draw(size, { maskable }) {
         } else if (distance < thickness * 1.6) {
           // A soft halo below and above, echoing the percentile band.
           const fade = 1 - (distance - thickness / 2) / (thickness * 1.1)
-          colour = mix(BACKGROUND, ribbon, fade * 0.35)
+          colour = mix(background, ribbon, fade * 0.35)
         }
       }
 
@@ -115,13 +119,25 @@ function draw(size, { maskable }) {
   return encodePNG(size, size, pixels)
 }
 
-mkdirSync(OUT, { recursive: true })
-writeFileSync(join(OUT, 'icon-192.png'), draw(192, { maskable: false }))
-writeFileSync(join(OUT, 'icon-512.png'), draw(512, { maskable: false }))
-writeFileSync(join(OUT, 'icon-512-maskable.png'), draw(512, { maskable: true }))
+/** Wraps a single PNG in the minimal ICO container browsers still fall back to. */
+function encodeICO(pngBuffer, size) {
+  const header = Buffer.alloc(6)
+  header.writeUInt16LE(1, 2) // type: icon
+  header.writeUInt16LE(1, 4) // image count
 
-/** Same ribbon mark; only the background swaps between the dark and light variants. */
-function favicon(background) {
+  const entry = Buffer.alloc(16)
+  entry[0] = size >= 256 ? 0 : size // width (0 means 256)
+  entry[1] = size >= 256 ? 0 : size // height
+  entry.writeUInt16LE(1, 4) // colour planes
+  entry.writeUInt16LE(32, 6) // bits per pixel
+  entry.writeUInt32LE(pngBuffer.length, 8)
+  entry.writeUInt32LE(header.length + entry.length, 12) // offset to image data
+
+  return Buffer.concat([header, entry, pngBuffer])
+}
+
+/** Same ribbon mark; only the background swaps between the light and dark variants. */
+function faviconSVG(background) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="${background}"/>
   <path d="M6 40C14 40 14 24 22 24s8 16 16 16 8-16 16-16" fill="none" stroke="url(#g)" stroke-width="9" stroke-linecap="round"/>
@@ -134,7 +150,48 @@ function favicon(background) {
 </svg>
 `
 }
-writeFileSync(join(OUT, 'favicon.svg'), favicon('#0b1220'))
-writeFileSync(join(OUT, 'favicon-light.svg'), favicon('#f8fafc'))
+
+mkdirSync(OUT, { recursive: true })
+
+// PWA manifest icons: the manifest format has no way to pick a scheme, so
+// this is the light, default set — used for the Android/desktop install
+// icon and, doubled up at 180px, for iOS's home-screen icon.
+writeFileSync(join(OUT, 'icon-192.png'), draw(192, { maskable: false, background: BACKGROUND_LIGHT }))
+writeFileSync(join(OUT, 'icon-512.png'), draw(512, { maskable: false, background: BACKGROUND_LIGHT }))
+writeFileSync(
+  join(OUT, 'icon-512-maskable.png'),
+  draw(512, { maskable: true, background: BACKGROUND_LIGHT }),
+)
+
+// iOS home-screen icon (Add to Home Screen / standalone). Safari doesn't
+// mask corners itself as aggressively as Android, but the maskable safe
+// zone still keeps the ribbon clear of the squircle crop. Safari 18+ can
+// pick the dark variant via the `media` attribute on the <link>; older
+// versions just use the light one.
+writeFileSync(
+  join(OUT, 'apple-touch-icon.png'),
+  draw(180, { maskable: true, background: BACKGROUND_LIGHT }),
+)
+writeFileSync(
+  join(OUT, 'apple-touch-icon-dark.png'),
+  draw(180, { maskable: true, background: BACKGROUND_DARK }),
+)
+
+// Browser-tab favicons: SVG first, PNG fallback, both themed. `favicon.svg`
+// (no suffix) is the light default so it also doubles as the ultimate
+// unthemed fallback for user agents that ignore `media` on <link rel=icon>.
+writeFileSync(join(OUT, 'favicon.svg'), faviconSVG('#f8fafc'))
+writeFileSync(join(OUT, 'favicon-dark.svg'), faviconSVG('#0b1220'))
+writeFileSync(join(OUT, 'favicon-32x32.png'), draw(32, { maskable: false, background: BACKGROUND_LIGHT }))
+writeFileSync(join(OUT, 'favicon-32x32-dark.png'), draw(32, { maskable: false, background: BACKGROUND_DARK }))
+writeFileSync(join(OUT, 'favicon-16x16.png'), draw(16, { maskable: false, background: BACKGROUND_LIGHT }))
+writeFileSync(join(OUT, 'favicon-16x16-dark.png'), draw(16, { maskable: false, background: BACKGROUND_DARK }))
+
+// Legacy /favicon.ico fallback used by user agents that never look at the
+// <link> tags at all (e.g. before the page has loaded). Always light.
+writeFileSync(
+  join(OUT, 'favicon.ico'),
+  encodeICO(draw(32, { maskable: false, background: BACKGROUND_LIGHT }), 32),
+)
 
 console.log('Icons written to public/')
