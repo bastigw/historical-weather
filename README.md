@@ -54,6 +54,32 @@ npm run preview   # serve the build, with the PWA active
 
 Icons are generated, not hand-drawn: `node scripts/generate-icons.mjs`.
 
+## Deployment
+
+The app is a static build served by nginx. It's a client-only PWA (no
+backend, no server-side config), so the only thing you'd ever want to
+change per-deployment is which host port it's published on.
+
+### Docker Compose
+
+```bash
+docker compose up -d --build       # serves on http://localhost:8080
+WEB_PORT=9000 docker compose up -d --build   # or any other free port
+```
+
+### Portainer
+
+1. **Stacks -> Add stack -> Repository**, point it at this repo
+   (`docker-compose.yml` at the root, branch `main`).
+2. Under **Environment variables**, add `WEB_PORT` set to whichever host
+   port is free on your server (defaults to `8080` if left unset — see
+   `.env.example`).
+3. Deploy the stack. Portainer builds the image from the `Dockerfile` on
+   the host, no external registry needed.
+
+To change the port later, edit the stack's environment variables and
+redeploy — no file edits required.
+
 ## Notes
 
 - Europe is a scoping choice; the data source is global, so other continents

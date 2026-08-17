@@ -1,0 +1,8 @@
+services:
+  historical-weather:
+    build: .
+    image: historical-weather:latest
+    container_name: historical-weather
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
