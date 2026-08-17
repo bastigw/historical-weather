@@ -11,9 +11,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon-light.svg'],
       manifest: {
-        name: 'Holiday Weather',
-        short_name: 'Holiday Weather',
-        description: 'What the weather has historically been like at your destination.',
+        name: 'Historical Weather',
+        short_name: 'Historical Weather',
+        description: 'What the weather has historically been like at a given location.',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',

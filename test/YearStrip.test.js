@@ -48,7 +48,7 @@ describe('YearStrip', () => {
     expect(lastWindow(wrapper)).toEqual({ startMonth: 12, startDay: 2, lengthDays: 7 })
   })
 
-  it('lengthens the trip when the right edge is dragged', async () => {
+  it('lengthens the period when the right edge is dragged', async () => {
     const wrapper = mountStrip()
     await strip(wrapper).trigger('pointerdown', { clientX: 332, pointerId: 1 })
     await strip(wrapper).trigger('pointermove', { clientX: 339, pointerId: 1 })

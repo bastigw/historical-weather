@@ -60,7 +60,7 @@ async function searchAndSelect(wrapper) {
 
 describe('App end to end', () => {
   it('starts on the empty state', () => {
-    expect(mountApp().text()).toContain('Pick a destination')
+    expect(mountApp().text()).toContain('Pick a location')
   })
 
   it('searches, loads the archive and shows the period statistics', async () => {

@@ -1,6 +1,6 @@
-# Holiday Weather
+# Historical Weather
 
-What the weather has *actually* been like at a European destination during a
+What the weather has *actually* been like at a European location during a
 given part of the year — not a forecast, a 20-year memory.
 
 Search a place, drag a window over the calendar, and see the temperatures,

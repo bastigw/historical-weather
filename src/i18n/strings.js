@@ -3,10 +3,10 @@
 // `{placeholders}` are filled by the second argument of `t`.
 export const strings = {
   en: {
-    appTitle: 'Holiday Weather',
-    tagline: 'What the weather has actually been like, where and when you are going.',
+    appTitle: 'Historical Weather',
+    tagline: 'What the weather has actually been like, at any place and time of year.',
 
-    searchLabel: 'Destination',
+    searchLabel: 'Location',
     searchPlaceholder: 'Search a town or city…',
     searching: 'Searching…',
     searchNoResults: 'No place found. Try a different spelling.',
@@ -16,7 +16,7 @@ export const strings = {
     removeFavourite: 'Remove',
     savedOffline: 'available offline',
 
-    emptyTitle: 'Pick a destination',
+    emptyTitle: 'Pick a location',
     emptyBody:
       'Search for a place in Europe, then drag a window over the calendar to see what those days have looked like over the last 20 years.',
 
@@ -26,8 +26,8 @@ export const strings = {
     errorGeneric: 'Could not load the weather archive. Please try again.',
     retry: 'Try again',
 
-    periodTitle: 'Your travel period',
-    periodHint: 'Drag the window, or drag its edges to make the trip longer.',
+    periodTitle: 'Your period',
+    periodHint: 'Drag the window, or drag its edges to make the period longer.',
     presetDay: '1 day',
     presetWeek: '1 week',
     presetTwoWeeks: '2 weeks',
@@ -56,14 +56,14 @@ export const strings = {
 
     probabilitiesTitle: 'How likely is it?',
     probabilitiesHint:
-      '“Any day” is the chance for a single day; “during the trip” is the share of years it happened at least once.',
+      '“Any day” is the chance for a single day; “during the period” is the share of years it happened at least once.',
     pWet: 'Rain',
     pFrost: 'Frost',
     pHot: 'Heat above 30 °C',
     pOvercast: 'Overcast day',
     pSnow: 'Snowfall',
     anyDay: 'Any day',
-    duringTrip: 'During the trip',
+    duringTrip: 'During the period',
 
     yearsTitle: 'Year by year',
     yearsHint: 'The same window in each of the last {n} years.',
@@ -96,10 +96,10 @@ export const strings = {
   },
 
   de: {
-    appTitle: 'Urlaubswetter',
-    tagline: 'Wie das Wetter am Reiseziel wirklich war – zur passenden Jahreszeit.',
+    appTitle: 'Wetterhistorie',
+    tagline: 'Wie das Wetter an einem Ort tatsächlich war – zur passenden Jahreszeit.',
 
-    searchLabel: 'Reiseziel',
+    searchLabel: 'Ort',
     searchPlaceholder: 'Ort oder Stadt suchen…',
     searching: 'Suche…',
     searchNoResults: 'Kein Ort gefunden. Andere Schreibweise versuchen.',
@@ -109,7 +109,7 @@ export const strings = {
     removeFavourite: 'Entfernen',
     savedOffline: 'offline verfügbar',
 
-    emptyTitle: 'Reiseziel wählen',
+    emptyTitle: 'Ort wählen',
     emptyBody:
       'Suche einen Ort in Europa und ziehe dann ein Fenster über den Kalender, um zu sehen, wie diese Tage in den letzten 20 Jahren waren.',
 
@@ -119,7 +119,7 @@ export const strings = {
     errorGeneric: 'Das Wetterarchiv konnte nicht geladen werden. Bitte erneut versuchen.',
     retry: 'Erneut versuchen',
 
-    periodTitle: 'Dein Reisezeitraum',
+    periodTitle: 'Dein Zeitraum',
     periodHint: 'Fenster verschieben oder an den Rändern ziehen, um den Zeitraum zu ändern.',
     presetDay: '1 Tag',
     presetWeek: '1 Woche',

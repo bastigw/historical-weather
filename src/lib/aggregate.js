@@ -368,7 +368,7 @@ const CONDITIONS = {
 /**
  * How likely each condition is during the window.
  *
- * `perDay` is the chance that an arbitrary day of the trip is like this;
+ * `perDay` is the chance that an arbitrary day of the period is like this;
  * `atLeastOne` is the share of years where it happened at least once — the
  * more useful number when packing a rain jacket.
  */
