@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+@custom-variant standalone (@media (display-mode: standalone));
+
+:root {
+  font-family: 'Outfit Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color-scheme: light dark;
+}
+
+html,
+body {
+  width: 100%;
+  overscroll-behavior-x: none;
+  background-color: #f8fafc;
+}
+
+body {
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #060911;
+  }
+
+  body {
+    color: #e2e8f0;
+  }
+}
+
+/* The year strip is a drag surface: never let a drag scroll the page instead. */
+.no-touch-scroll {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@utility card {
+  border-radius: 1rem;
+  border: 1px solid rgb(226 232 240);
+  background-color: rgb(255 255 255 / 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    border-color: rgb(30 41 59);
+    background-color: rgb(15 23 42 / 0.55);
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
